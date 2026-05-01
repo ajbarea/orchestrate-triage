@@ -89,7 +89,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 
 def read_already_processed(out_path: str | Path) -> set[str]:
-    """Return the set of `Issue` strings already present in `out_path`, for --resume."""
+    """Return the set of `issue` strings already present in `out_path`, for --resume."""
     p = Path(out_path)
     if not p.exists() or p.stat().st_size == 0:
         return set()
@@ -97,7 +97,7 @@ def read_already_processed(out_path: str | Path) -> set[str]:
     try:
         with open(p, encoding="utf-8", newline="") as f:
             for row in csv.DictReader(f):
-                issue = (row.get("Issue") or "").strip()
+                issue = (row.get("issue") or row.get("Issue") or "").strip()
                 if issue:
                     seen.add(issue)
     except (OSError, csv.Error):
@@ -132,27 +132,27 @@ def write_output(
             if to is None:
                 writer.writerow(
                     {
-                        "Issue": ti.issue,
-                        "Subject": ti.subject,
-                        "Company": ti.company,
-                        "Response": "",
-                        "Product Area": "",
-                        "Status": "escalated",
-                        "Request Type": "invalid",
-                        "Justification": "Model failed to return a valid triage decision.",
+                        "issue": ti.issue,
+                        "subject": ti.subject,
+                        "company": ti.company,
+                        "response": "",
+                        "product_area": "",
+                        "status": "escalated",
+                        "request_type": "invalid",
+                        "justification": "Model failed to return a valid triage decision.",
                     }
                 )
                 continue
             writer.writerow(
                 {
-                    "Issue": ti.issue,
-                    "Subject": ti.subject,
-                    "Company": ti.company,
-                    "Response": to.response,
-                    "Product Area": to.product_area,
-                    "Status": to.status.value,
-                    "Request Type": to.request_type.value,
-                    "Justification": to.justification,
+                    "issue": ti.issue,
+                    "subject": ti.subject,
+                    "company": ti.company,
+                    "response": to.response,
+                    "product_area": to.product_area,
+                    "status": to.status.value,
+                    "request_type": to.request_type.value,
+                    "justification": to.justification,
                 }
             )
 
@@ -271,14 +271,14 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def _load_output_rows(path: str | Path) -> dict[str, dict[str, str]]:
-    """Read existing output.csv into {Issue: row} for resume merging."""
+    """Read existing output.csv into {issue: row} for resume merging."""
     out: dict[str, dict[str, str]] = {}
     p = Path(path)
     if not p.exists() or p.stat().st_size == 0:
         return out
     with open(p, encoding="utf-8", newline="") as f:
         for row in csv.DictReader(f):
-            issue = (row.get("Issue") or "").strip()
+            issue = (row.get("issue") or row.get("Issue") or "").strip()
             if issue:
                 out[issue] = row
     return out
@@ -309,31 +309,39 @@ class _PriorRow:
     def __init__(self, row: dict[str, str]) -> None:
         self._row = row
 
+    def _get(self, *keys: str) -> str:
+        """Look up a CSV cell by any of the candidate keys, in order."""
+        for k in keys:
+            v = self._row.get(k)
+            if v:
+                return v
+        return ""
+
     @property
     def status(self):
         class _S:
-            value = (self._row.get("Status", "") or "").strip()
+            value = self._get("status", "Status").strip()
 
         return _S()
 
     @property
     def request_type(self):
         class _R:
-            value = (self._row.get("Request Type", "") or "").strip()
+            value = self._get("request_type", "Request Type").strip()
 
         return _R()
 
     @property
     def product_area(self) -> str:
-        return self._row.get("Product Area", "") or ""
+        return self._get("product_area", "Product Area")
 
     @property
     def response(self) -> str:
-        return self._row.get("Response", "") or ""
+        return self._get("response", "Response")
 
     @property
     def justification(self) -> str:
-        return self._row.get("Justification", "") or ""
+        return self._get("justification", "Justification")
 
 
 def _estimate_cost(usage: dict[str, int]) -> float:

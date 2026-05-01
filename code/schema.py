@@ -58,13 +58,12 @@ def output_tool_schema() -> dict:
 
 
 CSV_COLUMNS = [
-    "Issue",
-    "Subject",
-    "Company",
-    "Response",
-    "Product Area",
-    "Status",
-    "Request Type",
-    "Justification",
+    "issue",
+    "subject",
+    "company",
+    "response",
+    "product_area",
+    "status",
+    "request_type",
+    "justification",
 ]
-"""Column order for the predictions CSV. Matches sample_support_tickets.csv exactly."""
