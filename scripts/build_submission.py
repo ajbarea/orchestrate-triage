@@ -34,7 +34,6 @@ EXCLUDED_NAMES = {
     ".env",
     ".env.local",
     ".DS_Store",
-    "uv.lock",
 }
 
 EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".jsonl", ".csv"}
