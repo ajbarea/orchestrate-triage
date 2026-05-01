@@ -1,0 +1,35 @@
+# secrets
+.env
+.env.local
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# build
+dist/
+build/
+*.egg-info/
+
+# usage logs (per-run, never submit)
+logs/
+*.jsonl
+
+# editor / os
+.DS_Store
+.idea/
+.vscode/
+Thumbs.db
+
+# the starter's data/ corpus and support_tickets/ live in the upstream repo
+# (interviewstreet/hackerrank-orchestrate-may26); not redistributed here
+data/
+support_tickets/

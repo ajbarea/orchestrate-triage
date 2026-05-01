@@ -1,0 +1,127 @@
+"""Tests for resume / merge / cost-estimate helpers in main.py (no API)."""
+
+from __future__ import annotations
+
+import csv
+from pathlib import Path
+
+from main import (
+    _estimate_cost,
+    _load_output_rows,
+    _merge_with_prior,
+    read_already_processed,
+)
+from schema import CSV_COLUMNS, TicketInput
+
+
+def _write_sample_output(path: Path, rows: list[dict[str, str]]) -> None:
+    with open(path, "w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS, quoting=csv.QUOTE_ALL)
+        writer.writeheader()
+        for r in rows:
+            writer.writerow(r)
+
+
+def test_read_already_processed_empty(tmp_path: Path) -> None:
+    """Missing file or zero-byte file yields an empty set."""
+    p = tmp_path / "nope.csv"
+    assert read_already_processed(p) == set()
+    p.touch()
+    assert read_already_processed(p) == set()
+
+
+def test_read_already_processed_skips_blank_issues(tmp_path: Path) -> None:
+    out = tmp_path / "out.csv"
+    _write_sample_output(
+        out,
+        [
+            {
+                "Issue": "real ticket",
+                "Subject": "",
+                "Company": "Visa",
+                "Response": "x",
+                "Product Area": "general_support",
+                "Status": "replied",
+                "Request Type": "product_issue",
+            },
+            {
+                "Issue": "",  # blank — must be skipped
+                "Subject": "",
+                "Company": "",
+                "Response": "",
+                "Product Area": "",
+                "Status": "replied",
+                "Request Type": "invalid",
+            },
+        ],
+    )
+    seen = read_already_processed(out)
+    assert seen == {"real ticket"}
+
+
+def test_estimate_cost_matches_published_rates() -> None:
+    """Opus 4.7 standard pricing (Apr 2026): in $15/MT, out $75/MT, read $1.50/MT, create $18.75/MT.
+
+    1M of each should cost: 15 + 75 + 1.50 + 18.75 = 110.25
+    """
+    usage = {
+        "input": 1_000_000,
+        "output": 1_000_000,
+        "cache_read": 1_000_000,
+        "cache_create": 1_000_000,
+    }
+    assert abs(_estimate_cost(usage) - 110.25) < 1e-6
+
+
+def test_estimate_cost_zero_when_empty() -> None:
+    assert _estimate_cost({"input": 0, "output": 0, "cache_read": 0, "cache_create": 0}) == 0.0
+
+
+def test_load_output_rows_keys_by_issue(tmp_path: Path) -> None:
+    out = tmp_path / "out.csv"
+    _write_sample_output(
+        out,
+        [
+            {
+                "Issue": "issue-a",
+                "Subject": "subA",
+                "Company": "HackerRank",
+                "Response": "respA",
+                "Product Area": "screen",
+                "Status": "replied",
+                "Request Type": "product_issue",
+            },
+        ],
+    )
+    rows = _load_output_rows(out)
+    assert "issue-a" in rows
+    assert rows["issue-a"]["Status"] == "replied"
+    assert rows["issue-a"]["Product Area"] == "screen"
+
+
+def test_merge_with_prior_preserves_prior_when_new_is_none(tmp_path: Path) -> None:
+    """If --resume is set and a ticket already has a prior row, we keep the prior."""
+    inputs = [
+        TicketInput(issue="issue-a", subject="", company="HackerRank"),
+        TicketInput(issue="issue-b", subject="", company="Visa"),
+    ]
+    outputs: list = [None, None]
+    prior = {
+        "issue-a": {
+            "Issue": "issue-a",
+            "Subject": "",
+            "Company": "HackerRank",
+            "Response": "old respA",
+            "Product Area": "screen",
+            "Status": "replied",
+            "Request Type": "product_issue",
+        }
+    }
+    merged_in, merged_out = _merge_with_prior(inputs, outputs, prior)
+    assert len(merged_in) == 2
+    assert len(merged_out) == 2
+    # issue-a recovered from prior
+    assert merged_out[0].response == "old respA"
+    assert merged_out[0].status.value == "replied"
+    # issue-b stays None (the new run didn't process it and there was no prior)
+    assert merged_out[1] is None
