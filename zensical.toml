@@ -31,7 +31,9 @@ nav = [
 [project.theme]
 name = "material"
 language = "en"
+custom_dir = "overrides"
 icon.logo = "material/account-tie-voice"
+favicon = "assets/favicon.svg"
 font.text = "Inter"
 font.code = "JetBrains Mono"
 

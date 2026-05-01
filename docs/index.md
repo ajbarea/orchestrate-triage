@@ -10,17 +10,27 @@ hide:
 
 # Orchestrate Triage
 
-**A multi-domain support-triage AI agent. Built solo in 24 hours.**
+**A multi-domain support-triage AI agent. Built solo for HackerRank Orchestrate.**
 { .hero-subtitle }
 
 <div class="hero-buttons" markdown>
 
 [:octicons-rocket-24: Get Started](getting-started.md){ .md-button .md-button--primary }
 [:octicons-light-bulb-24: How It Works](overview.md){ .md-button }
+[:octicons-mark-github-24: GitHub](https://github.com/ajbarea/orchestrate-triage){ .md-button }
 
 </div>
 
+<div class="hero-stats" markdown>
+  <div class="hero-stat" markdown><strong>10 / 10 / 10</strong><span>sample-eval accuracy</span></div>
+  <div class="hero-stat" markdown><strong>29 / 29</strong><span>production tickets</span></div>
+  <div class="hero-stat" markdown><strong>4 min</strong><span>batch wall-time</span></div>
+  <div class="hero-stat" markdown><strong>~$50</strong><span>lifetime API spend</span></div>
 </div>
+
+</div>
+
+<div class="scroll-hint" aria-hidden="true"></div>
 
 ## What it does
 
@@ -56,25 +66,6 @@ Three ecosystems are in scope, each with its own local markdown corpus shipped a
 <p class="domain-desc">Lost or stolen cards, travel guidance, charge disputes, traveller's cheques. Smallest corpus, highest-stakes escalations.</p>
 </div>
 
-</div>
-
-<div class="stat-grid" markdown>
-  <div class="stat" markdown>
-  <strong>10 / 10 / 10</strong>
-  <span>sample-eval accuracy</span>
-  </div>
-  <div class="stat" markdown>
-  <strong>29 / 29</strong>
-  <span>production tickets succeeded</span>
-  </div>
-  <div class="stat" markdown>
-  <strong>4 min</strong>
-  <span>batch wall-time</span>
-  </div>
-  <div class="stat" markdown>
-  <strong>~$50</strong>
-  <span>lifetime API spend</span>
-  </div>
 </div>
 
 ## How it's built

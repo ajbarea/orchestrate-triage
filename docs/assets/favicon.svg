@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0F4C5C"/>
+      <stop offset="0.55" stop-color="#2A7F8F"/>
+      <stop offset="1" stop-color="#E36414"/>
+    </linearGradient>
+  </defs>
+  <!-- ink backdrop -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#0a0e12"/>
+  <!-- triage glyph: a single inbound stream branching to three outcomes,
+       evoking the hero image's three-stream router. teal→coral gradient. -->
+  <path d="M32 12 V28
+           M32 28 L18 48
+           M32 28 L32 48
+           M32 28 L46 48"
+        stroke="url(#g)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- three outcome nodes -->
+  <circle cx="18" cy="50" r="3.2" fill="#5DA9B8"/>
+  <circle cx="32" cy="50" r="3.2" fill="#FAF3EE"/>
+  <circle cx="46" cy="50" r="3.2" fill="#E36414"/>
+</svg>
