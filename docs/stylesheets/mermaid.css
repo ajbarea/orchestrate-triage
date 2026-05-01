@@ -1,0 +1,89 @@
+/* ==========================================================================
+   Mermaid theming — match the site's teal+coral palette so flowcharts feel
+   native rather than airdropped from light-mode. Zensical auto-detects
+   `mermaid` fences; this file just paints over the default theme.
+   ========================================================================== */
+
+/* Default node fill + stroke (rectangles) */
+.mermaid .node rect,
+.mermaid .node polygon,
+.mermaid .node ellipse {
+  fill: color-mix(in srgb, var(--teal-deep) 35%, transparent) !important;
+  stroke: var(--teal-light) !important;
+  stroke-width: 1.5px !important;
+}
+
+/* Cylinders ([( )] — used for input/output stores like CSVs) */
+.mermaid .node.cylinder path {
+  fill: color-mix(in srgb, var(--teal-mid) 30%, transparent) !important;
+  stroke: var(--teal-pale) !important;
+  stroke-width: 1.5px !important;
+}
+
+/* Hexagons / "service" nodes ({{ }} — used for the API boundary) */
+.mermaid .node.hexagon polygon,
+.mermaid g.node[id*="api"] polygon,
+.mermaid g.node[id*="api"] rect {
+  fill: color-mix(in srgb, var(--coral-bright) 22%, transparent) !important;
+  stroke: var(--coral-soft) !important;
+}
+
+/* Node text — paper-white for contrast against the dark fills */
+.mermaid .node .label,
+.mermaid .nodeLabel,
+.mermaid .nodeLabel * {
+  color: var(--paper) !important;
+  fill: var(--paper) !important;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* Edges — teal-light to match the rest of the site's accents */
+.mermaid .edgePath .path,
+.mermaid .flowchart-link {
+  stroke: var(--teal-light) !important;
+  stroke-width: 1.5px !important;
+}
+
+.mermaid .arrowheadPath,
+.mermaid marker path,
+.mermaid defs marker {
+  fill: var(--teal-light) !important;
+  stroke: var(--teal-light) !important;
+}
+
+/* Edge labels (e.g. "sync", "--batch (50% off)") — small ink chips so
+   they read as edge tags instead of floating text */
+.mermaid .edgeLabel,
+.mermaid .edgeLabel rect,
+.mermaid .edgeLabel * {
+  background: color-mix(in srgb, var(--ink) 80%, transparent) !important;
+  color: var(--paper) !important;
+  fill: var(--paper) !important;
+  border-radius: 0.25em !important;
+}
+.mermaid .edgeLabel foreignObject {
+  background: transparent !important;
+}
+
+/* Subgraph wrappers — dotted teal outline, ink fill */
+.mermaid .cluster rect {
+  fill: color-mix(in srgb, var(--ink) 40%, transparent) !important;
+  stroke: color-mix(in srgb, var(--teal-light) 45%, transparent) !important;
+  stroke-dasharray: 4 4 !important;
+  stroke-width: 1px !important;
+}
+.mermaid .cluster .cluster-label,
+.mermaid .cluster .cluster-label *,
+.mermaid .cluster text {
+  color: var(--teal-pale) !important;
+  fill: var(--teal-pale) !important;
+}
+
+/* Class-based highlight: nodes tagged `:::forced` get the coral palette
+   to call attention to "this is the forced/required step". */
+.mermaid .node.forced rect,
+.mermaid .node.forced polygon {
+  fill: color-mix(in srgb, var(--coral-bright) 28%, transparent) !important;
+  stroke: var(--coral-bright) !important;
+  stroke-width: 2px !important;
+}

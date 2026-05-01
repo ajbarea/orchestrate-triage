@@ -18,46 +18,45 @@ The hackathon scores submissions across four dimensions. Here's the explicit map
 
 ## System diagram
 
+```mermaid
+flowchart TD
+  csv[("support_tickets.csv")]
+  csv --> main["main.py<br/><small>argparse · csv I/O<br/>group tickets by company<br/>for cache locality</small>"]
+
+  main -->|sync| triage["agent.triage()"]
+  main -->|"--batch · 50% off"| batch["batch.run_batch()<br/><small>Message Batches API · async</small>"]
+
+  triage --> api{{"Anthropic Messages API<br/>Claude Opus 4.7 / Sonnet 4.6"}}
+  batch --> api
+
+  api --> validate["TicketOutput<br/><small>pydantic-validated</small>"]
+  validate --> output[("output.csv<br/>8 columns")]
+
+  classDef forced fill:#E36414,stroke:#F4A261,stroke-width:2px,color:#0a0e12
+  api:::forced
 ```
-support_tickets.csv
-        │
-        ▼
-   ┌──────────────────────────────────────────────────────────────┐
-   │  main.py                                                     │
-   │  ├── argparse: --tickets / --out / --batch / --model /       │
-   │  │              --resume / --dry-run / --limit / --verbose   │
-   │  ├── csv read → group tickets by `company` for cache locality│
-   │  └── dispatch:                                               │
-   │       sync path  →  agent.triage()  per ticket               │
-   │       --batch    →  batch.run_batch() — Message Batches API  │
-   └──────────────────────────────────────────────────────────────┘
-        │
-        ▼
-   ┌──────────────────────────────────────────────────────────────┐
-   │  Per-request structure (sync OR batch — identical body)      │
-   │                                                              │
-   │  system blocks (cache_control: ephemeral, ttl: 1h):          │
-   │    [0] SYSTEM_PROMPT  — instructions, escalation criteria,   │
-   │                          few-shot examples                   │
-   │    [1] <corpus> ... </corpus>                                │
-   │           per-domain markdown with frontmatter / image URLs  │
-   │           stripped, each file wrapped in <doc path="..."/>   │
-   │                                                              │
-   │  user message:                                               │
-   │    <user_ticket>                                             │
-   │    company: HackerRank | Claude | Visa | None                │
-   │    subject: ...                                              │
-   │    issue:   ...                                              │
-   │    </user_ticket>                                            │
-   │                                                              │
-   │  tools: [submit_triage]   (input_schema = TicketOutput)      │
-   │  tool_choice: {type: "tool", name: "submit_triage"}  forced  │
-   └──────────────────────────────────────────────────────────────┘
-        │
-        ▼
-   exactly one tool_use block →  validated through pydantic
-                              →  written as one row in output.csv
+
+### Per-request payload (same shape, sync or batch)
+
+```text
+system blocks (cache_control: ephemeral, ttl: 1h):
+  [0] SYSTEM_PROMPT  — instructions, escalation criteria, few-shot examples
+  [1] <corpus> ... </corpus>
+        per-domain markdown with frontmatter / image URLs stripped,
+        each file wrapped in <doc path="data/..."/>
+
+user message:
+  <user_ticket>
+  company: HackerRank | Claude | Visa | None
+  subject: ...
+  issue:   ...
+  </user_ticket>
+
+tools:        [submit_triage]    (input_schema = TicketOutput)
+tool_choice:  {type: "tool", name: "submit_triage"}    forced
 ```
+
+The forced `tool_choice` is what guarantees a structured row per ticket: constrained decoding under tool-use can't emit anything that violates the `TicketOutput` schema. No parsing fallback, no retries on missing-tool calls.
 
 ## File map
 
