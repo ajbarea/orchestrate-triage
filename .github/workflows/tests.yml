@@ -1,0 +1,82 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "code/**"
+      - ".github/workflows/tests.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "code/**"
+      - ".github/workflows/tests.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Linting
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: code
+    steps:
+      - uses: actions/checkout@v6.0.2
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "latest"
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v6.2.0
+        with:
+          python-version-file: "code/pyproject.toml"
+
+      - name: Install dependencies
+        run: uv sync --group dev --frozen
+
+      - name: Run ruff format check
+        run: uv run ruff format --check .
+
+      - name: Run ruff lint
+        run: uv run ruff check .
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: code
+    env:
+      # Tests don't make API calls, but agent.make_client() reads this on import.
+      ANTHROPIC_API_KEY: sk-test-placeholder
+    steps:
+      - uses: actions/checkout@v6.0.2
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "latest"
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v6.2.0
+        with:
+          python-version-file: "code/pyproject.toml"
+
+      - name: Install dependencies
+        run: uv sync --group dev --frozen
+
+      - name: Run unit tests
+        run: uv run pytest tests/ -q --tb=short

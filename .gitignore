@@ -33,3 +33,13 @@ Thumbs.db
 # (interviewstreet/hackerrank-orchestrate-may26); not redistributed here
 data/
 support_tickets/
+
+# Zensical build output
+site/
+
+# strategy / judge-prep notes — never commit, this repo is portfolio-public
+*-talking-points*.md
+*-judge-prep*.md
+HACKATHON_NOTES*.md
+ANTIPATTERNS*.md
+stack-decision*.md

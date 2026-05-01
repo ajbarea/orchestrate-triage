@@ -1,0 +1,21 @@
+:root {
+  /* Triage palette — calm technical teal + warm coral for escalation/CTA. */
+  --teal-deep: #0F4C5C;
+  --teal-mid: #2A7F8F;
+  --teal-light: #5DA9B8;
+  --teal-pale: #C8E0E5;
+
+  --coral-bright: #E36414;
+  --coral-soft: #F4A261;
+
+  --ink: #0a0e12;
+  --paper: #FAF3EE;
+
+  --triage-gradient: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal-mid) 50%, var(--coral-bright) 100%);
+  --glass-bg: color-mix(in srgb, #fff 4%, transparent);
+  --glass-border: color-mix(in srgb, var(--teal-light) 18%, transparent);
+
+  /* Zensical / Material overrides */
+  --md-primary-fg-color: var(--teal-light);
+  --md-accent-fg-color: var(--coral-soft);
+}
