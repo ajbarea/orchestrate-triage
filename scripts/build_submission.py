@@ -65,10 +65,16 @@ def build(out: Path) -> None:
         for src in sorted(CODE_DIR.rglob("*")):
             if not src.is_file():
                 continue
-            rel = src.relative_to(CODE_DIR)
-            if not _included(rel):
+            rel_inside_code = src.relative_to(CODE_DIR)
+            if not _included(rel_inside_code):
                 continue
-            zf.write(src, arcname=str(rel))
+            # Preserve the `code/` folder prefix in the zip so the grader's
+            # extraction lands modules at `code/main.py` etc. — main.py and
+            # corpus.py both resolve `Path(__file__).resolve().parent.parent`
+            # to the repo root, which only works when the script sits one
+            # directory below the root (i.e., inside `code/`).
+            arcname = (Path("code") / rel_inside_code).as_posix()
+            zf.write(src, arcname=arcname)
             n += 1
 
     size = out.stat().st_size
