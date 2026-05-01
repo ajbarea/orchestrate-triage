@@ -128,7 +128,7 @@ See the [Getting Started guide](https://ajbarea.github.io/orchestrate-triage/get
 | **Async + 50%-off batch** | Anthropic Message Batches API via `--batch` (50% off all token types, ~30 min wall time) |
 | **Recovery** | `--resume` re-reads `output.csv`, skips done tickets; `--dry-run` for plan validation without API |
 | **Cost transparency** | Per-call JSONL usage logging at `code/logs/usage.jsonl` |
-| **Quality** | 31 pytest unit tests (zero API calls), `ruff`-clean, ty-typed |
+| **Quality** | 32 pytest unit tests (zero API calls), `ruff`-clean, ty-typed |
 
 ---
 

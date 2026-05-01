@@ -22,17 +22,17 @@ def test_request_type_values() -> None:
     }
 
 
-def test_csv_columns_match_sample() -> None:
-    """Output column order must match the sample CSV exactly."""
+def test_csv_columns_match_official_template() -> None:
+    """CSV_COLUMNS = lowercase snake_case, in the order the output.csv template uses."""
     assert CSV_COLUMNS == [
-        "Issue",
-        "Subject",
-        "Company",
-        "Response",
-        "Product Area",
-        "Status",
-        "Request Type",
-        "Justification",
+        "issue",
+        "subject",
+        "company",
+        "response",
+        "product_area",
+        "status",
+        "request_type",
+        "justification",
     ]
 
 

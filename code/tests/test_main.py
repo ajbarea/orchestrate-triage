@@ -10,8 +10,9 @@ from main import (
     _load_output_rows,
     _merge_with_prior,
     read_already_processed,
+    write_output,
 )
-from schema import CSV_COLUMNS, TicketInput
+from schema import CSV_COLUMNS, RequestType, Status, TicketInput, TicketOutput
 
 
 def _write_sample_output(path: Path, rows: list[dict[str, str]]) -> None:
@@ -36,22 +37,22 @@ def test_read_already_processed_skips_blank_issues(tmp_path: Path) -> None:
         out,
         [
             {
-                "Issue": "real ticket",
-                "Subject": "",
-                "Company": "Visa",
-                "Response": "x",
-                "Product Area": "general_support",
-                "Status": "replied",
-                "Request Type": "product_issue",
+                "issue": "real ticket",
+                "subject": "",
+                "company": "Visa",
+                "response": "x",
+                "product_area": "general_support",
+                "status": "replied",
+                "request_type": "product_issue",
             },
             {
-                "Issue": "",  # blank — must be skipped
-                "Subject": "",
-                "Company": "",
-                "Response": "",
-                "Product Area": "",
-                "Status": "replied",
-                "Request Type": "invalid",
+                "issue": "",  # blank — must be skipped
+                "subject": "",
+                "company": "",
+                "response": "",
+                "product_area": "",
+                "status": "replied",
+                "request_type": "invalid",
             },
         ],
     )
@@ -83,20 +84,68 @@ def test_load_output_rows_keys_by_issue(tmp_path: Path) -> None:
         out,
         [
             {
-                "Issue": "issue-a",
-                "Subject": "subA",
-                "Company": "HackerRank",
-                "Response": "respA",
-                "Product Area": "screen",
-                "Status": "replied",
-                "Request Type": "product_issue",
+                "issue": "issue-a",
+                "subject": "subA",
+                "company": "HackerRank",
+                "response": "respA",
+                "product_area": "screen",
+                "status": "replied",
+                "request_type": "product_issue",
             },
         ],
     )
     rows = _load_output_rows(out)
     assert "issue-a" in rows
-    assert rows["issue-a"]["Status"] == "replied"
-    assert rows["issue-a"]["Product Area"] == "screen"
+    assert rows["issue-a"]["status"] == "replied"
+    assert rows["issue-a"]["product_area"] == "screen"
+
+
+def test_write_output_uses_lowercase_snake_case_schema(tmp_path: Path) -> None:
+    """Output CSV header + status/request_type values are lowercase snake_case."""
+    out = tmp_path / "out.csv"
+    inputs = [
+        TicketInput(issue="i1", subject="s1", company="HackerRank"),
+        TicketInput(issue="i2", subject="s2", company="Visa"),
+        TicketInput(issue="i3", subject="s3", company="None"),
+    ]
+    outputs: list[TicketOutput | None] = [
+        TicketOutput(
+            status=Status.REPLIED,
+            product_area="screen",
+            response="r1",
+            justification="j1",
+            request_type=RequestType.PRODUCT_ISSUE,
+        ),
+        TicketOutput(
+            status=Status.ESCALATED,
+            product_area="general_support",
+            response="r2",
+            justification="j2",
+            request_type=RequestType.BUG,
+        ),
+        None,  # exercises the model-failed fallback row
+    ]
+    write_output(out, inputs, outputs)
+
+    with open(out, encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        assert list(reader.fieldnames or []) == [
+            "issue",
+            "subject",
+            "company",
+            "response",
+            "product_area",
+            "status",
+            "request_type",
+            "justification",
+        ]
+        rows = list(reader)
+    assert rows[0]["status"] == "replied"
+    assert rows[1]["status"] == "escalated"
+    assert rows[2]["status"] == "escalated"
+    assert rows[0]["request_type"] == "product_issue"
+    assert rows[1]["request_type"] == "bug"
+    assert rows[2]["request_type"] == "invalid"
 
 
 def test_merge_with_prior_preserves_prior_when_new_is_none(tmp_path: Path) -> None:
@@ -108,13 +157,13 @@ def test_merge_with_prior_preserves_prior_when_new_is_none(tmp_path: Path) -> No
     outputs: list = [None, None]
     prior = {
         "issue-a": {
-            "Issue": "issue-a",
-            "Subject": "",
-            "Company": "HackerRank",
-            "Response": "old respA",
-            "Product Area": "screen",
-            "Status": "replied",
-            "Request Type": "product_issue",
+            "issue": "issue-a",
+            "subject": "",
+            "company": "HackerRank",
+            "response": "old respA",
+            "product_area": "screen",
+            "status": "replied",
+            "request_type": "product_issue",
         }
     }
     merged_in, merged_out = _merge_with_prior(inputs, outputs, prior)
