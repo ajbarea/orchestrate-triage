@@ -57,5 +57,14 @@ def output_tool_schema() -> dict:
     return TicketOutput.model_json_schema()
 
 
-CSV_COLUMNS = ["Issue", "Subject", "Company", "Response", "Product Area", "Status", "Request Type"]
+CSV_COLUMNS = [
+    "Issue",
+    "Subject",
+    "Company",
+    "Response",
+    "Product Area",
+    "Status",
+    "Request Type",
+    "Justification",
+]
 """Column order for the predictions CSV. Matches sample_support_tickets.csv exactly."""

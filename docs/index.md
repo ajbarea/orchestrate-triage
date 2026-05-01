@@ -6,7 +6,7 @@ hide:
   - footer
 ---
 
-<div class="hero" markdown>
+<div class="hero hero--bg" markdown>
 
 # Orchestrate Triage
 
@@ -31,7 +31,32 @@ For each row in a CSV of support tickets, the agent decides:
 - whether to **reply** (with a corpus-grounded answer) or **escalate** to a human,
 - and a **justification** the judge can audit against the source corpus.
 
-Three ecosystems are in scope: **HackerRank Support**, **Claude Help Center**, and **Visa Support** — each with a local markdown corpus shipped alongside the input tickets.
+Three ecosystems are in scope, each with its own local markdown corpus shipped alongside the input tickets:
+
+<div class="domain-grid" markdown>
+
+<div class="domain" data-domain="hackerrank" markdown>
+<span class="domain-icon">:material-account-check-outline:</span>
+<span class="domain-name">HackerRank Support</span>
+<span class="domain-tokens">580K tokens · 14 test tickets</span>
+<p class="domain-desc">Candidate management, screen tests, interviews, billing, account access — the bulk of the test set.</p>
+</div>
+
+<div class="domain" data-domain="claude" markdown>
+<span class="domain-icon">:material-robot-outline:</span>
+<span class="domain-name">Claude Help Center</span>
+<span class="domain-tokens">540K tokens · 7 test tickets</span>
+<p class="domain-desc">API & Console, Claude Code, privacy, Bedrock, education licensing, safeguards / vulnerability reporting.</p>
+</div>
+
+<div class="domain" data-domain="visa" markdown>
+<span class="domain-icon">:material-credit-card-outline:</span>
+<span class="domain-name">Visa Support</span>
+<span class="domain-tokens">18K tokens · 6 test tickets</span>
+<p class="domain-desc">Lost or stolen cards, travel guidance, charge disputes, traveller's cheques. Smallest corpus, highest-stakes escalations.</p>
+</div>
+
+</div>
 
 <div class="stat-grid" markdown>
   <div class="stat" markdown>

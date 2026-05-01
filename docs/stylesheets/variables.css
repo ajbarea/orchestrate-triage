@@ -15,6 +15,14 @@
   --glass-bg: color-mix(in srgb, #fff 4%, transparent);
   --glass-border: color-mix(in srgb, var(--teal-light) 18%, transparent);
 
+  --hero-bg-image: url("../assets/hero.png");
+
+  /* Domain accent colors — brand-evocative without shipping actual logos.
+     Used as left borders + icon tints on the per-domain cards on the home page. */
+  --hr-accent: #00B57A;       /* HackerRank green */
+  --claude-accent: #D97757;   /* Anthropic warm coral (close to our --coral-bright) */
+  --visa-accent: #1A1F71;     /* Visa indigo */
+
   /* Zensical / Material overrides */
   --md-primary-fg-color: var(--teal-light);
   --md-accent-fg-color: var(--coral-soft);

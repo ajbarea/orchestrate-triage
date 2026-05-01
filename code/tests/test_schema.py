@@ -32,6 +32,7 @@ def test_csv_columns_match_sample() -> None:
         "Product Area",
         "Status",
         "Request Type",
+        "Justification",
     ]
 
 

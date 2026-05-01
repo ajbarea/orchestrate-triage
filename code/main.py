@@ -139,6 +139,7 @@ def write_output(
                         "Product Area": "",
                         "Status": "escalated",
                         "Request Type": "invalid",
+                        "Justification": "Model failed to return a valid triage decision.",
                     }
                 )
                 continue
@@ -151,6 +152,7 @@ def write_output(
                     "Product Area": to.product_area,
                     "Status": to.status.value,
                     "Request Type": to.request_type.value,
+                    "Justification": to.justification,
                 }
             )
 
@@ -331,7 +333,7 @@ class _PriorRow:
 
     @property
     def justification(self) -> str:
-        return ""
+        return self._row.get("Justification", "") or ""
 
 
 def _estimate_cost(usage: dict[str, int]) -> float:

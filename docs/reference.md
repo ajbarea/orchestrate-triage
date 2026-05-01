@@ -86,7 +86,7 @@ class RequestType(StrEnum):  PRODUCT_ISSUE, FEATURE_REQUEST, BUG, INVALID
 class TicketInput(BaseModel):  issue, subject, company
 class TicketOutput(BaseModel): status, product_area, response, justification, request_type
 
-CSV_COLUMNS  = [Issue, Subject, Company, Response, Product Area, Status, Request Type]
+CSV_COLUMNS  = [Issue, Subject, Company, Response, Product Area, Status, Request Type, Justification]
 output_tool_schema() → JSON Schema dict for the submit_triage tool
 ```
 
