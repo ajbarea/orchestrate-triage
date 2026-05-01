@@ -37,7 +37,7 @@ EXCLUDED_NAMES = {
     "uv.lock",
 }
 
-EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".jsonl"}
+EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".jsonl", ".csv"}
 
 
 def _included(path: Path) -> bool:
