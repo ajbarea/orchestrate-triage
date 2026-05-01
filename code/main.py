@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import csv
 import logging
+import os
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -42,7 +43,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=str(REPO_ROOT / "support_tickets" / "output.csv"),
         help="Path to write the predictions CSV.",
     )
-    parser.add_argument("--model", default="claude-opus-4-7", help="Claude model id.")
+    parser.add_argument(
+        "--model",
+        default=os.environ.get("MODEL", "claude-sonnet-4-6"),
+        help=(
+            "Claude model id. Defaults to Sonnet 4.6 — has the 1M-token context "
+            "the HR + Claude corpora need, ~5x cheaper than Opus, plenty for dev "
+            "iteration. Override with --model claude-opus-4-7 for the final "
+            "production run, or set MODEL in .env. (Haiku 4.5 only has 200K "
+            "context which doesn't fit the HR/Claude corpora.)"
+        ),
+    )
     parser.add_argument(
         "--limit",
         type=int,
@@ -189,8 +200,12 @@ def main(argv: list[str] | None = None) -> int:
         from batch import run_batch
 
         n = sum(len(v) for v in by_company.values())
-        logger.info("--batch: submitting %d tickets as a single async Anthropic batch", n)
-        batch_results = run_batch(client, by_company)
+        logger.info(
+            "--batch: submitting %d tickets as a single async Anthropic batch (model=%s)",
+            n,
+            args.model,
+        )
+        batch_results = run_batch(client, by_company, model=args.model)
         ok = 0
         for i, out in batch_results.items():
             results[i] = out

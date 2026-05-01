@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import csv
 import logging
+import os
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -34,7 +35,14 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser = argparse.ArgumentParser(description="Run the agent on the labeled sample tickets.")
     parser.add_argument("--limit", type=int, default=None)
-    parser.add_argument("--model", default="claude-opus-4-7")
+    parser.add_argument(
+        "--model",
+        default=os.environ.get("MODEL", "claude-sonnet-4-6"),
+        help=(
+            "Claude model id. Defaults to Sonnet 4.6 (1M context, ~5x cheaper than Opus). "
+            "Haiku 4.5 only has 200K context which doesn't fit HR/Claude corpora."
+        ),
+    )
     args = parser.parse_args(argv)
 
     load_dotenv(REPO_ROOT / ".env")

@@ -34,7 +34,12 @@ POLL_TIMEOUT_SEC = 24 * 60 * 60
 EXTENDED_CACHE_BETA = "extended-cache-ttl-2025-04-11"
 
 
-def _build_params(ticket: TicketInput, corpus_blob: str) -> MessageCreateParamsNonStreaming:
+def _build_params(
+    ticket: TicketInput,
+    corpus_blob: str,
+    *,
+    model: str = "claude-opus-4-7",
+) -> MessageCreateParamsNonStreaming:
     """Build the per-request params object — same shape as the sync triage call."""
     user_msg = wrap_ticket(ticket.issue, ticket.subject, ticket.company)
     system_blocks: list[dict[str, Any]] = [
@@ -53,7 +58,7 @@ def _build_params(ticket: TicketInput, corpus_blob: str) -> MessageCreateParamsN
             }
         )
     return MessageCreateParamsNonStreaming(
-        model="claude-opus-4-7",
+        model=model,
         max_tokens=2048,
         system=system_blocks,
         messages=[{"role": "user", "content": user_msg}],
@@ -62,7 +67,11 @@ def _build_params(ticket: TicketInput, corpus_blob: str) -> MessageCreateParamsN
     )
 
 
-def build_requests(numbered: list[tuple[int, TicketInput]]) -> list[Request]:
+def build_requests(
+    numbered: list[tuple[int, TicketInput]],
+    *,
+    model: str = "claude-opus-4-7",
+) -> list[Request]:
     """Construct one batch Request per (index, ticket).
 
     Each request's `custom_id` is `ticket-NNN` so we can re-thread results
@@ -72,7 +81,7 @@ def build_requests(numbered: list[tuple[int, TicketInput]]) -> list[Request]:
     for i, t in numbered:
         company = normalize_company(t.company)
         corpus = load_domain(company) if company else ""
-        params = _build_params(t, corpus)
+        params = _build_params(t, corpus, model=model)
         requests.append(Request(custom_id=f"ticket-{i:03d}", params=params))
     return requests
 
@@ -142,6 +151,8 @@ def submit_and_wait(
 def run_batch(
     client: Anthropic,
     by_company: dict[str | None, list[tuple[int, TicketInput]]],
+    *,
+    model: str = "claude-opus-4-7",
 ) -> dict[int, TicketOutput | None]:
     """High-level wrapper: flatten by-company dict to a single batch and submit."""
     flat: list[tuple[int, TicketInput]] = []
@@ -149,5 +160,5 @@ def run_batch(
         flat.extend(tickets)
     flat.sort(key=lambda x: x[0])
 
-    requests = build_requests(flat)
+    requests = build_requests(flat, model=model)
     return submit_and_wait(client, requests)
