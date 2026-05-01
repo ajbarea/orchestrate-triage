@@ -6,7 +6,10 @@ hide:
   - footer
 ---
 
-<div class="hero hero--bg" markdown>
+<div class="hero" markdown>
+<div class="hero-content" markdown>
+
+<span class="hero-eyebrow">ORCHESTRATE · SUPPORT-TRIAGE · MAY 2026</span>
 
 # Orchestrate Triage
 
@@ -21,16 +24,18 @@ hide:
 
 </div>
 
+</div>
+<div class="hero-figure">
+  <div class="hero-figure-frame"></div>
+</div>
+</div>
+
 <div class="hero-stats" markdown>
-  <div class="hero-stat" markdown><strong>10 / 10 / 10</strong><span>sample-eval accuracy</span></div>
+  <div class="hero-stat" markdown><strong>10 / 10 / 10</strong><span>sample&#8209;eval accuracy</span></div>
   <div class="hero-stat" markdown><strong>29 / 29</strong><span>production tickets</span></div>
   <div class="hero-stat" markdown><strong>4 min</strong><span>batch wall-time</span></div>
   <div class="hero-stat" markdown><strong>~$50</strong><span>lifetime API spend</span></div>
 </div>
-
-</div>
-
-<div class="scroll-hint" aria-hidden="true"></div>
 
 ## What it does
 
