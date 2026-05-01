@@ -1,12 +1,26 @@
-"""Corpus loader tests (no API)."""
+"""Corpus loader tests (no API).
+
+Skipped when the upstream `data/` corpus is not present on disk. This repo
+(orchestrate-triage) doesn't redistribute the corpus — it lives in
+`interviewstreet/hackerrank-orchestrate-may26`. Local development with both
+repos side-by-side runs these tests; CI on the portfolio repo skips them.
+The non-corpus tests (normalize_company, etc.) still run.
+"""
 
 from __future__ import annotations
 
 import pytest
 
-from corpus import HR_EXCLUDE_SUBDIRS, load_domain, normalize_company
+from corpus import DATA_ROOT, HR_EXCLUDE_SUBDIRS, load_domain, normalize_company
+
+_corpus_present = (DATA_ROOT / "visa").exists()
+needs_corpus = pytest.mark.skipif(
+    not _corpus_present,
+    reason=f"data/ corpus not present at {DATA_ROOT}; clone the starter repo to enable",
+)
 
 
+@needs_corpus
 @pytest.mark.parametrize("c", ["hackerrank", "claude", "visa"])
 def test_load_domain_nonempty(c: str) -> None:
     blob = load_domain(c)
@@ -14,6 +28,7 @@ def test_load_domain_nonempty(c: str) -> None:
     assert '<doc path="' in blob, f"{c} corpus missing doc path tags"
 
 
+@needs_corpus
 def test_visa_corpus_is_smallest() -> None:
     """Visa's domain is order-of-magnitude smaller than the other two.
 
@@ -28,6 +43,7 @@ def test_visa_corpus_is_smallest() -> None:
     assert len(visa) * 10 < len(hr)
 
 
+@needs_corpus
 def test_hr_excludes_dev_facing_subdirs() -> None:
     """HR corpus must omit `integrations` and `library` to fit the context window."""
     hr = load_domain("hackerrank")
@@ -47,6 +63,7 @@ def test_normalize_company_none_variants() -> None:
         assert normalize_company(v) is None, f"expected None for {v!r}"
 
 
+@needs_corpus
 def test_corpus_strips_image_urls() -> None:
     hr = load_domain("hackerrank")
     # The aggressive stripper replaces signed image URLs with `[image]`.
