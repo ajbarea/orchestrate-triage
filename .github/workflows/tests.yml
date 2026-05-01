@@ -4,15 +4,9 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "code/**"
-      - ".github/workflows/tests.yml"
   pull_request:
     branches:
       - main
-    paths:
-      - "code/**"
-      - ".github/workflows/tests.yml"
   workflow_dispatch:
 
 concurrency:
