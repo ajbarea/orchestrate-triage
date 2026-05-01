@@ -17,7 +17,7 @@
   font-weight: 700 !important;
 }
 
-/* Primary buttons — teal→coral gradient, ink text. */
+/* Primary buttons — teal→coral gradient, paper text. */
 .md-button--primary {
   background: var(--triage-gradient) !important;
   color: var(--paper) !important;
@@ -27,6 +27,29 @@
   padding: 0.7rem 1.8rem !important;
   border-radius: 2rem !important;
   box-shadow: 0 4px 18px color-mix(in srgb, var(--teal-light) 28%, transparent) !important;
+}
+
+/* Secondary buttons inside the hero — glass outline so they're visible
+   against the colorful hero image without stealing focus from the primary
+   gradient CTA. mkdocs-material's default .md-button has near-transparent
+   fill which disappears on the dark image background. */
+.hero-buttons .md-button:not(.md-button--primary) {
+  background: color-mix(in srgb, var(--ink) 55%, transparent) !important;
+  color: var(--paper) !important;
+  border: 1px solid color-mix(in srgb, var(--teal-light) 55%, transparent) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  padding: 0.7rem 1.7rem !important;
+  border-radius: 2rem !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 14px color-mix(in srgb, #000 40%, transparent) !important;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+.hero-buttons .md-button:not(.md-button--primary):hover {
+  border-color: var(--teal-pale) !important;
+  background: color-mix(in srgb, var(--ink) 35%, transparent) !important;
+  transform: translateY(-1px);
 }
 
 /* ==========================================================================
