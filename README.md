@@ -18,7 +18,7 @@
 
 ---
 
-**Built solo for [HackerRank Orchestrate](https://www.hackerrank.com/contests/hackerrank-orchestrate-may26) (May 1–2, 2026). 100/100/100 on the labeled sample eval. 29/29 on the production batch in 4 minutes.**
+**Built solo for [HackerRank Orchestrate](https://www.hackerrank.com/contests/hackerrank-orchestrate-may26) (May 1–2, 2026). 100% on every graded column of the labeled sample (10 tickets). 29/29 on the production batch in 4 minutes.**
 
 ```
 $ uv run python main.py --batch --model claude-opus-4-7
@@ -67,7 +67,7 @@ The contest gave 24 hours. Build time was ~2.
 |---|---|---|
 | **Python** | 3.12+ | Required by `anthropic ≥ 0.97` and `pydantic 2` |
 | **[uv](https://docs.astral.sh/uv/)** | ≥ 0.5 | Fast, lockfile-deterministic Python packaging |
-| **Anthropic API key** | — | From [console.anthropic.com](https://console.anthropic.com/) — separate billing from any Claude.ai subscription |
+| **Anthropic API key** | — | From [platform.claude.com](https://platform.claude.com/) — separate billing from any Claude.ai subscription |
 
 ### Get running
 

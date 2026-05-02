@@ -20,7 +20,6 @@ hide:
 
 [:octicons-rocket-24: Get Started](getting-started.md){ .md-button .md-button--primary }
 [:octicons-light-bulb-24: How It Works](overview.md){ .md-button }
-[:octicons-mark-github-24: GitHub](https://github.com/ajbarea/orchestrate-triage){ .md-button }
 
 </div>
 
@@ -31,10 +30,10 @@ hide:
 </div>
 
 <div class="hero-stats" markdown>
-  <div class="hero-stat" markdown><strong>10 / 10 / 10</strong><span>sample&#8209;eval accuracy</span></div>
+  <div class="hero-stat" markdown><strong>10 / 10 / 10</strong><span>labeled sample · 3 graded columns</span></div>
   <div class="hero-stat" markdown><strong>29 / 29</strong><span>production tickets</span></div>
   <div class="hero-stat" markdown><strong>4 min</strong><span>batch wall-time</span></div>
-  <div class="hero-stat" markdown><strong>~$50</strong><span>lifetime API spend</span></div>
+  <div class="hero-stat" markdown><strong>~2 hr</strong><span>build · of 24 allotted</span></div>
 </div>
 
 ## What it does
@@ -55,6 +54,7 @@ Three ecosystems are in scope, each with its own local markdown corpus shipped a
 <span class="domain-name">HackerRank Support</span>
 <span class="domain-tokens">580K tokens · 14 test tickets</span>
 <p class="domain-desc">Candidate management, screen tests, interviews, billing, account access — the bulk of the test set.</p>
+<a class="domain-link" href="https://support.hackerrank.com/" target="_blank" rel="noopener" aria-label="Open HackerRank Support in a new tab"></a>
 </div>
 
 <div class="domain" data-domain="claude" markdown>
@@ -62,6 +62,7 @@ Three ecosystems are in scope, each with its own local markdown corpus shipped a
 <span class="domain-name">Claude Help Center</span>
 <span class="domain-tokens">540K tokens · 7 test tickets</span>
 <p class="domain-desc">API & Console, Claude Code, privacy, Bedrock, education licensing, safeguards / vulnerability reporting.</p>
+<a class="domain-link" href="https://support.claude.com/" target="_blank" rel="noopener" aria-label="Open Claude Help Center in a new tab"></a>
 </div>
 
 <div class="domain" data-domain="visa" markdown>
@@ -69,6 +70,7 @@ Three ecosystems are in scope, each with its own local markdown corpus shipped a
 <span class="domain-name">Visa Support</span>
 <span class="domain-tokens">18K tokens · 6 test tickets</span>
 <p class="domain-desc">Lost or stolen cards, travel guidance, charge disputes, traveller's cheques. Smallest corpus, highest-stakes escalations.</p>
+<a class="domain-link" href="https://usa.visa.com/support.html" target="_blank" rel="noopener" aria-label="Open Visa Support in a new tab"></a>
 </div>
 
 </div>

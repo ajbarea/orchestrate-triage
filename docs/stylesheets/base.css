@@ -257,6 +257,18 @@
   flex-direction: column;
   gap: 0.45rem;
   transition: transform 0.15s ease, box-shadow 0.15s ease, border-left-color 0.15s ease;
+  position: relative;
+}
+.domain-grid .domain-link {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  text-indent: -9999px;
+  overflow: hidden;
+}
+.domain-grid .domain-link:focus-visible {
+  outline: 2px solid var(--teal-pale);
+  outline-offset: 2px;
 }
 .domain-grid .domain:hover {
   transform: translateY(-2px);
@@ -398,8 +410,12 @@
   }
   .hero-figure { order: -1; }                     /* image moves above content */
   .hero-figure-frame { aspect-ratio: 21 / 9; }    /* shorter banner on mobile */
-  .hero-content { align-items: flex-start; }
-  .hero-subtitle { max-width: 100%; }
+  /* Mobile: center content under the now-stacked figure to match the sister
+     sites and avoid the figure-centered / content-left-aligned axis mismatch. */
+  .hero-content { align-items: center; text-align: center; }
+  .hero-eyebrow { border-left: none; padding-left: 0; }
+  .hero-buttons { justify-content: center; }
+  .hero-subtitle { max-width: 100%; margin-left: auto; margin-right: auto; }
 }
 
 @media (max-width: 640px) {

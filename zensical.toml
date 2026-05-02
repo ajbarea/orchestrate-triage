@@ -3,6 +3,8 @@ site_name = "Orchestrate Triage"
 site_description = "A multi-domain support-triage AI agent built solo for HackerRank Orchestrate (May 2026). Terminal-based, Claude Opus 4.7, corpus-stuffed prompt caching, prompt-injection-defended."
 site_author = "AJ Barea"
 site_url = "https://ajbarea.github.io/orchestrate-triage/"
+repo_url = "https://github.com/ajbarea/orchestrate-triage"
+repo_name = "ajbarea/orchestrate-triage"
 copyright = "AJ Barea · 2026"
 extra_css = [
   "stylesheets/variables.css",

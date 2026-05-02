@@ -8,7 +8,7 @@ This repo is the **agent layer only**. The contest's `data/` corpus and `support
 |---|---|---|
 | **Python** | 3.12+ | Required by `anthropic ≥ 0.97` and `pydantic 2` |
 | **[uv](https://docs.astral.sh/uv/)** | ≥ 0.5 | Fast, lockfile-deterministic Python packaging |
-| **Anthropic API key** | — | Console account from [console.anthropic.com](https://console.anthropic.com/) — separate billing bucket from any Claude.ai Pro/Max subscription |
+| **Anthropic API key** | — | Console account from [platform.claude.com](https://platform.claude.com/) — separate billing bucket from any Claude.ai Pro/Max subscription |
 
 ## 1. Lay out the workspace
 
