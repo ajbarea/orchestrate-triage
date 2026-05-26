@@ -399,6 +399,29 @@
 }
 
 /* ==========================================================================
+   Scroll-reveal — each .landing-section fades up as it enters view, matching
+   the sister docs (reveal.js adds .js-ready on <html>, .visible per section).
+   Progressive enhancement: without js-ready the sections are simply visible.
+   ========================================================================== */
+/* research(2026-05): kept the IntersectionObserver reveal (reveal.js) over pure
+   CSS animation-timeline: view() — scroll-driven CSS is compositor-cheap but
+   Firefox still ships it behind a flag in 2026 (not Baseline), and the IO
+   version matches every sister. Easing is ease-out (easeOutQuint), <700ms.
+   Sources: MDN scroll-driven-animations; developer.mozilla.org animation-timeline. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js-ready .landing-section {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform .6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  html.js-ready .landing-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
    RESPONSIVE — collapse to single column on mid screens; switch the stats
    strip to a 2×2 grid with cell hairlines on the narrowest phones.
    ========================================================================== */

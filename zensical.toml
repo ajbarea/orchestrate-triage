@@ -11,6 +11,7 @@ extra_css = [
   "stylesheets/base.css",
   "stylesheets/mermaid.css",
 ]
+extra_javascript = ["javascripts/reveal.js"]
 
 # ---------------------------------------------------------------------------
 # Navigation

@@ -29,12 +29,14 @@ hide:
 </div>
 </div>
 
-<div class="hero-stats" markdown>
+<div class="hero-stats landing-section" markdown>
   <div class="hero-stat" markdown><strong>10 / 10 / 10</strong><span>labeled sample · 3 graded columns</span></div>
   <div class="hero-stat" markdown><strong>29 / 29</strong><span>production tickets</span></div>
   <div class="hero-stat" markdown><strong>4 min</strong><span>batch wall-time</span></div>
   <div class="hero-stat" markdown><strong>~2 hr</strong><span>build · of 24 allotted</span></div>
 </div>
+
+<section class="landing-section" markdown>
 
 ## What it does
 
@@ -74,6 +76,9 @@ Three ecosystems are in scope, each with its own local markdown corpus shipped a
 </div>
 
 </div>
+</section>
+
+<section class="landing-section" markdown>
 
 ## How it's built
 
@@ -82,7 +87,12 @@ Three ecosystems are in scope, each with its own local markdown corpus shipped a
 - **Forced single-tool-call** (`submit_triage`) returns schema-validated `TicketOutput` rows in one round-trip.
 - **Spotlighting + structural delimiters** for prompt-injection defense — ticket text is wrapped in `<user_ticket>` XML tags with a system instruction to treat contents as data.
 - **Async Message Batches API** for 50%-off production runs.
+</section>
+
+<section class="landing-section" markdown>
 
 ## Where this came from
 
 [HackerRank Orchestrate](https://www.hackerrank.com/contests/hackerrank-orchestrate-may26) is a 24-hour solo hackathon (May 1–2, 2026). The starter scaffold and labeled-sample corpus live in [interviewstreet/hackerrank-orchestrate-may26](https://github.com/interviewstreet/hackerrank-orchestrate-may26); this site documents the agent built on top of it. Source: [github.com/ajbarea/orchestrate-triage](https://github.com/ajbarea/orchestrate-triage).
+
+</section>
