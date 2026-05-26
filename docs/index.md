@@ -30,7 +30,7 @@ hide:
 </div>
 
 <div class="hero-stats landing-section" markdown>
-  <div class="hero-stat" markdown><strong>10 / 10 / 10</strong><span>labeled sample · 3 graded columns</span></div>
+  <div class="hero-stat" markdown><strong>100%</strong><span>labeled sample (10 tickets) · 3 graded columns</span></div>
   <div class="hero-stat" markdown><strong>29 / 29</strong><span>production tickets</span></div>
   <div class="hero-stat" markdown><strong>4 min</strong><span>batch wall-time</span></div>
   <div class="hero-stat" markdown><strong>~2 hr</strong><span>build · of 24 allotted</span></div>
